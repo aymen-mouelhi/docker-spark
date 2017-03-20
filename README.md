@@ -31,11 +31,14 @@ To download the data needed for the labs, exec into the master container:
     rm lastfm/README.txt
     ```
 To get all the jupyter notebooks, exec into the pyspark-notebook container:
+
     ```
     docker exec -it dockerspark_pyspark-notebook_1 bash
+
     # Get Notebooks from github repository
     cd /tmp && git clone https://github.com/DistributedSystemsGroup/Algorithmic-Machine-Learning
     cd /tmp/Algorithmic-Machine-Learning/ && mv  -v Notebooks/* /home/jovyan/work
+
     ```
 
 ### Example
