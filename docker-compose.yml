@@ -24,6 +24,18 @@ master:
     - ./conf/master:/conf
     - ./data:/tmp/data
 
+pyspark-notebook:
+  image: jupyter/pyspark-notebook
+  hostname: pyspark-notebook
+  environment:
+    SPARK_CONF_DIR: /conf
+    SPARK_PUBLIC_DNS: localhost
+  ports:
+    - 8888:8888
+  volumes:
+    - ./conf/worker:/conf
+    - ./data:/tmp/data
+
 worker:
   image: gettyimages/spark
   command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
