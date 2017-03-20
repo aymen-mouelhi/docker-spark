@@ -1,38 +1,44 @@
-
 # spark
 
 A `debian:jessie` based [Spark](http://spark.apache.org) container. Use it in a standalone cluster with the accompanying `docker-compose.yml`, or as a base for more complex recipes.
 
-## docker example
-
-To run `SparkPi`, run the image with Docker:
-
-    docker run --rm -it -p 4040:4040 gettyimages/spark bin/run-example SparkPi 10
-
-To start `spark-shell` with your AWS credentials:
-
-    docker run --rm -it -e "AWS_ACCESS_KEY_ID=YOURKEY" -e "AWS_SECRET_ACCESS_KEY=YOURSECRET" -p 4040:4040 gettyimages/spark bin/spark-shell
-
-To do a thing with Pyspark
-
-    echo "import pyspark\nprint(pyspark.SparkContext().parallelize(range(0, 10)).count())" > count.py
-    docker run --rm -it -p 4040:4040 -v $(pwd)/count.py:/count.py gettyimages/spark bin/spark-submit /count.py
-
-## docker-compose example
+## Usage
 
 To create a simplistic standalone cluster with [docker-compose](http://docs.docker.com/compose):
-
+    ```
     docker-compose up
+    ```
 
-The SparkUI will be running at `http://${YOUR_DOCKER_HOST}:8080` with one worker listed. To run `pyspark`, exec into a container:
+The SparkUI will be running at `http://${YOUR_DOCKER_HOST}:8080` with one worker listed.
+Jupyter pySpark Notebook will be running at `http://${YOUR_DOCKER_HOST}:8888`.
 
-    docker exec -it dockerspark_master_1 /bin/bash
-    bin/pyspark
+To download the data needed for the labs, exec into the master container:
+    ```
+    docker exec -it dockerspark_master_1 bash
 
-To run `SparkPi`, exec into a container:
+    # Install wget
+    apt-get update
+    apt-get -f install
+    apt-get install -y wget
 
-    docker exec -it dockerspark_master_1 /bin/bash
-    bin/run-example SparkPi 10
+    # Create folder lastfm
+    cd /datasets && mkdir lastfm
+
+    # Download User Artist Data
+    wget http://www.iro.umontreal.ca/~lisa/datasets/profiledata_06-May-2005.tar.gz && tar xvzf profiledata_06-May-2005.tar.gz && rm profiledata_06-May-2005.tar.gz
+    mv profiledata_06-May-2005/* /datasets/lastfm
+    rm -r profiledata_06-May-2005
+    rm lastfm/README.txt
+    ```
+To get all the jupyter notebooks, exec into the pyspark-notebook container:
+    ```
+    docker exec -it dockerspark_pyspark-notebook_1 bash
+    # Get Notebooks from github repository
+    cd /tmp && git clone https://github.com/DistributedSystemsGroup/Algorithmic-Machine-Learning
+    cd /tmp/Algorithmic-Machine-Learning/ && mv  -v Notebooks/* /home/jovyan/work
+    ```
+
+### Example
 
 ## license
 
