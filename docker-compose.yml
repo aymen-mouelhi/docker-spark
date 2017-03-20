@@ -22,7 +22,7 @@ master:
     - 8080:8080
   volumes:
     - ./conf/master:/conf
-    - ./data:/tmp/data
+    - ./data:/datasets
 
 pyspark-notebook:
   image: jupyter/pyspark-notebook
@@ -31,10 +31,10 @@ pyspark-notebook:
     SPARK_CONF_DIR: /conf
     SPARK_PUBLIC_DNS: localhost
   ports:
-    - 8888:8888
+    - "8888:8888"
   volumes:
     - ./conf/worker:/conf
-    - ./data:/tmp/data
+    - ./data:/datasets
 
 worker:
   image: gettyimages/spark
@@ -60,4 +60,4 @@ worker:
     - 8081:8081
   volumes:
     - ./conf/worker:/conf
-    - ./data:/tmp/data
+    - ./data:/datasets
